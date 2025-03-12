@@ -5,7 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-# 크롤링을 위한 requests와 beautifulsoupW
+# 크롤링을 위한 requests와 beautifulsoup
 import requests
 import certifi
 from bs4 import BeautifulSoup
@@ -35,7 +35,7 @@ def croll():
         except:
             break
         
-        driver.switch_to.window(driver.window_handles[-1])
+        driver.switch_to.window(driver.window_handles[-1]) # 새 창으로 이동
         WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, '#thesisTitle')))
         soup = BeautifulSoup(driver.page_source, features="html.parser")
         title = soup.select_one("h1.thesisDetail__tit").text.strip()
