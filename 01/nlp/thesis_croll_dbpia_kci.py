@@ -26,7 +26,7 @@ import os
 
 def croll():
     for i in tqdm(range(1, 102)):
-        if i == 6:
+        if i == 6: # 100개씩 봤을 때 6번째 광고
             continue
         try:
             driver.find_element(By.XPATH, f'/html/body/main/article[2]/section/section[2]/section[2]/article[{i}]/section[1]/section[2]/article/a').click()
