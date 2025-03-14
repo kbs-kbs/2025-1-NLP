@@ -1,15 +1,44 @@
 # scrapy-splash API예제
-
+- curl: http 요청을 보내는 프로그램/명령어
 - 터미널에서 splash 서버의 api를 통해 렌더링된 페이지 반환
+
+- `http://localhost:8050/render.html?url=https://example.com`과 같은 요청을 보내면, Splash는 example.com 페이지를 로드하고 JavaScript를 실행한 후의 최종 HTML을 반환합니다.
+
+- POST 방식
 ```bash
 curl --location 'http://localhost:8050/render.html' \
 --header 'content-type: application/json' \
---data '{"url": "https://web-scraping.dev/products"}'
+--data '{"url": "https://quotes.toscrape.com/js/"}'
 ```
 
+- GET 방식
 ```
 curl 'http://localhost:8050/render.html?url=https://quotes.toscrape.com/js/'
 ```
+
+Splash API를 통해 버튼 클릭 후 렌더링된 새 페이지를 가져오려면 Lua 스크립트를 활용해야 합니다. render.html 엔드포인트만으로는 클릭 동작을 시뮬레이션할 수 없으며, execute 엔드포인트를 사용해야 합니다.
+
+구현 방법 (CURL 예시)
+```bash
+curl --location 'http://localhost:8050/execute' \
+--header 'Content-Type: application/json' \
+--data '{
+  "lua_source": "
+    function main(splash)
+      splash:go(\"https://quotes.toscrape.com/js/\")
+      splash:wait(1.0)
+      
+      -- 버튼 선택 및 클릭 (예: Next 버튼)
+      local btn = splash:select(\"a.next\")
+      btn:click()
+      
+      splash:wait(1.0)  -- 새 콘텐츠 로딩 대기
+      return splash:html()
+    end
+  "
+}'
+```
+
 
 - 코드로
 Splash로 웹 스크래핑하려면 전송된 각 요청에서 얻은 HTML을 캡처해야 합니다. 따라서 CURL 대신 Python requests를 사용하여 위의 요청을 전송해 보겠습니다.
