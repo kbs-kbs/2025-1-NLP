@@ -1,3 +1,61 @@
+# scrapy-splash API예제
+
+- 터미널에서 splash 서버의 api를 통해 렌더링된 페이지 반환
+```bash
+curl --location 'http://localhost:8050/render.html' \
+--header 'content-type: application/json' \
+--data '{"url": "https://web-scraping.dev/products"}'
+```
+
+```
+curl 'http://localhost:8050/render.html?url=https://quotes.toscrape.com/js/'
+```
+
+- 코드로
+Splash로 웹 스크래핑하려면 전송된 각 요청에서 얻은 HTML을 캡처해야 합니다. 따라서 CURL 대신 Python requests를 사용하여 위의 요청을 전송해 보겠습니다.
+```
+import requests
+import json
+
+url = "http://localhost:8050/render.html"
+
+payload = json.dumps({
+  "url": "https://web-scraping.dev/products" # page URL to render
+})
+headers = {
+  'content-type': 'application/json'
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
+"""
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8">
+<title>web-scraping.dev product page 1</title>    
+"""
+```
+
+```
+from scrapy_splash import SplashRequest
+
+class MySpider(scrapy.Spider):
+    name = 'my_spider'
+
+    def start_requests(self):
+        yield SplashRequest(
+            url='http://example.com',
+            callback=self.parse,
+            args={'wait': 1}
+        )
+
+    def parse(self, response):
+        # Your parsing logic here
+        pass
+```
+
+
+
 # 필요한 라이브러리 설치
 !pip install scrapy pandas
 
