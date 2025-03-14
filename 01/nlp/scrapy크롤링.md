@@ -47,25 +47,27 @@ curl --location 'http://localhost:8050/execute' \
 http://localhost:8050/execute?lua_source=function main(splash) splash:go("https://example.com") return splash:html() end
 ```
 
+## scrapy 없이 splash 사용
 
-- 코드로
-Splash로 웹 스크래핑하려면 전송된 각 요청에서 얻은 HTML을 캡처해야 합니다. 따라서 CURL 대신 Python requests를 사용하여 위의 요청을 전송해 보겠습니다.
+curl 대신 requests를 사용
+
 ```
 import requests
 import json
 
-url = "http://localhost:8050/render.html"
-
-payload = json.dumps({
-  "url": "https://web-scraping.dev/products" # page URL to render
-})
+url = 'http://localhost:8050/render.html'
 headers = {
   'content-type': 'application/json'
 }
+payload = json.dumps({
+  "url": "https://web-scraping.dev/products" # page URL to render
+})
+
 
 response = requests.request("POST", url, headers=headers, data=payload)
 
 print(response.text)
+
 """
 <!DOCTYPE html><html lang="en"><head>
     <meta charset="utf-8">
@@ -84,9 +86,11 @@ class DbpiaSpider(scrapy.Spider):
     def start_requests(self):
         yield SplashRequest(
               url, # 위치 인자
-              self.parse_result, # 위치 인자
+              self.parse, # 위치 인자
               endpoint='execute', # 여기서부터 키워드 인자
-              args={'lua_source': lua_script}
+              args={'lua_source': lua_script,
+                  'wait': 1.5
+              }
         )
 
 
