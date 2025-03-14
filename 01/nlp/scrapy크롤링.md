@@ -19,6 +19,9 @@ curl 'http://localhost:8050/render.html?url=https://quotes.toscrape.com/js/'
 Splash API를 통해 버튼 클릭 후 렌더링된 새 페이지를 가져오려면 Lua 스크립트를 활용해야 합니다. render.html 엔드포인트만으로는 클릭 동작을 시뮬레이션할 수 없으며, execute 엔드포인트를 사용해야 합니다.
 
 구현 방법 (CURL 예시)
+
+- POST
+
 ```bash
 curl --location 'http://localhost:8050/execute' \
 --header 'Content-Type: application/json' \
@@ -37,6 +40,11 @@ curl --location 'http://localhost:8050/execute' \
     end
   "
 }'
+```
+
+-get 방식
+```
+http://localhost:8050/execute?lua_source=function main(splash) splash:go("https://example.com") return splash:html() end
 ```
 
 
