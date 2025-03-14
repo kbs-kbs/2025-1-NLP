@@ -1,10 +1,18 @@
-# splash API예제
-- curl: http 요청을 보내는 프로그램/명령어
-- 터미널에서 splash 서버의 api를 통해 렌더링된 페이지 반환
+# splash 크롤링
 
-- `http://localhost:8050/render.html?url=https://example.com`과 같은 요청을 보내면, Splash는 example.com 페이지를 로드하고 JavaScript를 실행한 후의 최종 HTML을 반환합니다.
+> splash는 로컬에서 실행되는 서버로, 이 서버의 엔드포인트에 url을 전송하면 동적 페이지를 렌더링하고 결과를 html로 반환해줍니다.
+
+주로 사용되는 엔드포인트
+
+1. `http://localhost:8050/render.html`
+2. `http://localhost:8050/render.json`
+3. `http://localhost:8050/excute`
+
+예를 들어,`http://localhost:8050/render.html?url=https://example.com`과 같은 요청을 보내면, Splash는 example.com 페이지를 로드하고 JavaScript를 실행한 후의 최종 HTML을 반환합니다.
 
 ## 1. curl + splash로 동적 페이지 크롤링
+
+- curl: http 요청을 보내는 프로그램/명령어
 
 - POST 방식
 ```bash
