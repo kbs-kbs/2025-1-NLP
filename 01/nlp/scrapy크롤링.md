@@ -1,8 +1,10 @@
-# scrapy-splash API예제
+# splash API예제
 - curl: http 요청을 보내는 프로그램/명령어
 - 터미널에서 splash 서버의 api를 통해 렌더링된 페이지 반환
 
 - `http://localhost:8050/render.html?url=https://example.com`과 같은 요청을 보내면, Splash는 example.com 페이지를 로드하고 JavaScript를 실행한 후의 최종 HTML을 반환합니다.
+
+## 1. curl + splash로 동적 페이지 크롤링
 
 - POST 방식
 ```bash
@@ -47,7 +49,7 @@ curl --location 'http://localhost:8050/execute' \
 http://localhost:8050/execute?lua_source=function main(splash) splash:go("https://example.com") return splash:html() end
 ```
 
-## scrapy 없이 splash 사용
+## 2. requests 라이브러리 + splash 사용
 
 curl 대신 requests를 사용
 
@@ -75,6 +77,8 @@ print(response.text)
 """
 ```
 
+
+## 3. scrapy 라이브러리 + splash 사용
 
 ```
 import scrapy
