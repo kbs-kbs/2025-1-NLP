@@ -73,18 +73,23 @@ print(response.text)
 """
 ```
 
+
 ```
+import scrapy
 from scrapy_splash import SplashRequest
 
-class MySpider(scrapy.Spider):
-    name = 'my_spider'
+class DbpiaSpider(scrapy.Spider):
+    name = 'dbpia'
 
     def start_requests(self):
         yield SplashRequest(
-            url='http://example.com',
-            callback=self.parse,
-            args={'wait': 1}
+              url, # 위치 인자
+              self.parse_result, # 위치 인자
+              endpoint='execute', # 여기서부터 키워드 인자
+              args={'lua_source': lua_script}
         )
+
+
 
     def parse(self, response):
         # Your parsing logic here
@@ -93,61 +98,18 @@ class MySpider(scrapy.Spider):
 
 
 
-# 필요한 라이브러리 설치
-!pip install scrapy pandas
 
-import scrapy
-from scrapy.crawler import CrawlerProcess
-import pandas as pd
-from google.colab import files
 
-class DbpiaSpider(scrapy.Spider):
-    name = "dbpia"
-    allowed_domains = ["dbpia.co.kr"]
-    
-    def __init__(self, search='', min_year='', max_year='', *args, **kwargs):
-        super(DbpiaSpider, self).__init__(*args, **kwargs)
-        self.search = search
-        self.min_year = min_year
-        self.max_year = max_year
-        self.results = []
 
-    def start_requests(self):
-        base_url = f"https://www.dbpia.co.kr/search/topSearch?searchOption=all&query={self.search}"
-        yield scrapy.Request(url=base_url, callback=self.parse_search)
 
-    def parse_search(self, response):
-        article_links = response.css('article a::attr(href)').getall()
-        for link in article_links:
-            full_link = response.urljoin(link)
-            yield scrapy.Request(url=full_link, callback=self.parse_article)
 
-        next_page = response.css('a.next::attr(href)').get()
-        if next_page:
-            next_page_url = response.urljoin(next_page)
-            yield scrapy.Request(url=next_page_url, callback=self.parse_search)
 
-    def parse_article(self, response):
-        title = response.css('h1.thesisDetail__tit::text').get()
-        year_text = response.css('li.journalList__item span::text').getall()
-        year = year_text[3] if len(year_text) > 3 else None
-        
-        if year and self.min_year <= year <= self.max_year:
-            keywords_list = response.css('a.keywordWrap__keyword::text').getall()
-            keywords_list = [kw.replace("#", "").strip() for kw in keywords_list]
 
-            abstract_elem = response.css('div.abstractTxt::text').get()
-            abstract_parts = abstract_elem.split('  ') if abstract_elem else []
-            abstract = abstract_parts[0].strip() if len(abstract_parts) > 0 else None
-            multilingual_abstract = abstract_parts[1].strip() if len(abstract_parts) > 1 else None
 
-            self.results.append({
-                'title': title,
-                'year': year,
-                'keywords': keywords_list,
-                'abstract': abstract,
-                'multilingual_abstract': multilingual_abstract,
-            })
+
+
+
+---
 
 # 사용자 입력 받기
 search = input("검색할 키워드: ").strip()
