@@ -92,6 +92,20 @@ class DbpiaSpider(scrapy.Spider):
     name = 'dbpia'
 
     def start_requests(self):
+        query = input()
+        lua_script = "
+            function main(splash)
+                splash:go(\"https://quotes.toscrape.com/js/\")
+                splash:wait(1.0)
+      
+      -- 버튼 선택 및 클릭 (예: Next 버튼)
+      local btn = splash:select(\"a.next\")
+      btn:click()
+      
+      splash:wait(1.0)  -- 새 콘텐츠 로딩 대기
+      return splash:html()
+    end
+"
         yield SplashRequest(
               url, # 위치 인자
               self.parse, # 위치 인자
