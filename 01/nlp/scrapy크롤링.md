@@ -78,9 +78,13 @@ print(response.text)
 ```
 
 
-## 3. scrapy 라이브러리 + splash 사용
+## 3. scrapy + splash 사용
 
 ```
+pip install scrapy scrapy_splash
+```
+
+```python title:dbpia.py
 import scrapy
 from scrapy_splash import SplashRequest
 
@@ -92,7 +96,8 @@ class DbpiaSpider(scrapy.Spider):
               url, # 위치 인자
               self.parse, # 위치 인자
               endpoint='execute', # 여기서부터 키워드 인자
-              args={'lua_source': lua_script,
+              args={
+                  'lua_source': lua_script,
                   'wait': 1.5
               }
         )
