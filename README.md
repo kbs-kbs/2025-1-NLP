@@ -35,3 +35,10 @@ word2vec
 정규화 코드 통째로
 
 20문제
+
+.head()
+.tail()
+.isnull.sum()
+.discribe()
+.shape()
+.info()
