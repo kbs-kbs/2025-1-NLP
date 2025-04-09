@@ -7,5 +7,8 @@
 
 fit(), transformO fitJransformO
 
+빈도수 합계:
+df_dtm.sum().to_frame().T
+
 
 ngram 시험문제 x
