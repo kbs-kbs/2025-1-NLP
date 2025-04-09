@@ -7,6 +7,7 @@
 
 fit(), transformO fitJransformO
 
+시험문제
 빈도수 합계:
 df_dtm.sum().to_frame().T
 
