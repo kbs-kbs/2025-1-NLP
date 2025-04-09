@@ -36,9 +36,16 @@ word2vec
 
 20문제
 
+
+11개 중 6개
 .head()
 .tail()
 .isnull.sum()
 .discribe()
 .shape()
 .info()
+
+
+
+split
+contains
